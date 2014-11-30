@@ -191,7 +191,7 @@ public class StSCorrection {
         System.out.println("\t*     0: if = 0 then Compare All Known Actions                      *");
         System.out.println("\t*        else if = 1 then Check Log file                            *");
         System.out.println("\t*     1: maximum overlap (if negative is taken from signatures)     *");
-        System.out.println("\t*     2: maximum signature lenth                                    *");
+        System.out.println("\t*     2: maximum signature length                                    *");
         System.out.println("\t*     3: path to taxonomy file                                      *");
         System.out.println("\t*     4: path to LOG file                                           *");
         System.out.println("\t*     5: path to result file to be saved                            *");
