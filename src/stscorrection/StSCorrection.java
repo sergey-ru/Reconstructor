@@ -27,6 +27,7 @@ public class StSCorrection {
     private static final OperationType splitByStart = OperationType.TCPReceive;
     private static final OperationType splitByEnd = OperationType.ThreadExit;
     private static int maxOverLap = 4;
+    private static  int maxSignature = 50000;
     
     public static void main(String[] args) {
         
@@ -49,10 +50,13 @@ public class StSCorrection {
         
         maxOverLap = EventComparator.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
         
-        System.out.println("Check Log file");
-
+        System.out.println("Checking Log file");
+        System.out.println("maxOverLap="+maxOverLap);
+        System.out.println("maxSignature="+maxSignature);
+        System.out.println();
+        
         //SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logfile_042.CSV"), splitByStart, splitByEnd);
-        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_alex.CSV"), splitByStart, splitByEnd);
+        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV"), splitByStart, splitByEnd);
         HashSet<Integer> foundActions = new HashSet();
 
         for (int i = 0; i < splitedArray.length; i++) {
@@ -66,8 +70,7 @@ public class StSCorrection {
                 for (int j = i; j < splitedArray.length && j < i+maxOverLap; j++) {
 
                     toCompare = ArrayUtils.addAll(toCompare, splitedArray[j]);
-                    if(toCompare.length>50000){
-                        System.out.println("break");
+                    if(toCompare.length>maxSignature){
                         break;
                     }
                     Future<ActionsPair> future = pool.submit(new EventComparator(toCompare,foundActions, i, j));
@@ -97,11 +100,16 @@ public class StSCorrection {
     
     private static void Parallel_Main_Method(String[] args) {
         OperationType.init();
-        maxOverLap = EventComparator.init(args[2], splitByStart, splitByEnd);
+        maxOverLap = EventComparator.init(args[3], splitByStart, splitByEnd);
         
         if(Integer.parseInt(args[1]) > 0)
         {
             maxOverLap = Integer.parseInt(args[1]);
+        }
+        
+        if(Integer.parseInt(args[2]) > 0)
+        {
+            maxSignature = Integer.parseInt(args[2]);
         }
 
         if (args[0].contains("0")) {
@@ -110,8 +118,11 @@ public class StSCorrection {
         } else if (args[0].contains("1")) {
 
             System.out.println("Checking Log file");
+            System.out.println("maxOverLap="+maxOverLap);
+            System.out.println("maxSignature="+maxSignature);
+            System.out.println();
             StringBuilder sb = new StringBuilder();
-            SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile(args[3]), splitByStart, splitByEnd);
+            SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile(args[4]), splitByStart, splitByEnd);
             HashSet<Integer> foundActions = new HashSet();
             
             
@@ -128,6 +139,11 @@ public class StSCorrection {
 
                     for (int j = i; j < splitedArray.length && j < i+maxOverLap; j++) {
                         toCompare = ArrayUtils.addAll(toCompare, splitedArray[j]);
+                        
+                        if(toCompare.length>maxSignature){
+                            break;
+                        }
+                        
                         Future<ActionsPair> future = pool.submit(new EventComparator(toCompare, foundActions, i, j));
 
                         actions.add(future);
@@ -156,7 +172,7 @@ public class StSCorrection {
                 }
             }
             try {
-                BufferedWriter out = new BufferedWriter(new FileWriter(args[4]));
+                BufferedWriter out = new BufferedWriter(new FileWriter(args[5]));
                 out.write(sb.toString());
                 out.close();
             } catch (Exception ex) {
@@ -168,15 +184,18 @@ public class StSCorrection {
 
     private static void printStart()
     {
-        System.out.println("If no arguments where resieved, the program will run in test mode");
-        System.out.println("");
-        System.out.println("Arguments:");
-        System.out.println("    0: if = 0 then Compare All Known Actions");
-        System.out.println("       else if = 1 then Check Log file");
-        System.out.println("    1: maximum overlap (if negative is taken from signatures)");
-        System.out.println("    2: path to taxonomy file");
-        System.out.println("    3: path to LOG file");
-        System.out.println("    4: path to result file to be saved");
+        System.out.println("\t*********************************************************************");
+        System.out.println("\t* If no arguments where resieved, the program will run in test mode *");
+        System.out.println("\t*********************************************************************");
+        System.out.println("\t* Arguments:                                                        *");
+        System.out.println("\t*     0: if = 0 then Compare All Known Actions                      *");
+        System.out.println("\t*        else if = 1 then Check Log file                            *");
+        System.out.println("\t*     1: maximum overlap (if negative is taken from signatures)     *");
+        System.out.println("\t*     2: maximum signature lenth                                    *");
+        System.out.println("\t*     3: path to taxonomy file                                      *");
+        System.out.println("\t*     4: path to LOG file                                           *");
+        System.out.println("\t*     5: path to result file to be saved                            *");
+        System.out.println("\t*********************************************************************");
         System.out.println("");
     }
     
