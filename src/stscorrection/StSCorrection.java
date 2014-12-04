@@ -17,6 +17,8 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.ArrayUtils;
+import stscorrection.Evaluation.LogSergei;
+import stscorrection.Evaluation.LogSlava;
 
 /**
  *
@@ -50,6 +52,8 @@ public class StSCorrection {
         
         maxOverLap = EventComparator.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
         
+        maxOverLap = 1;
+        
         System.out.println("Checking Log file");
         System.out.println("maxOverLap="+maxOverLap);
         System.out.println("maxSignature="+maxSignature);
@@ -58,7 +62,8 @@ public class StSCorrection {
         //SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logfile_042.CSV"), splitByStart, splitByEnd);
         SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV"), splitByStart, splitByEnd);
         HashSet<Integer> foundActions = new HashSet();
-
+        ArrayList<ActionsPair> ansList = new ArrayList<>();
+        
         for (int i = 0; i < splitedArray.length; i++) {
             ActionsPair ap_old = null;
             SystemEvent[] toCompare = new SystemEvent[0];
@@ -93,8 +98,13 @@ public class StSCorrection {
                 System.out.println(round(ap_old.getKey(), 3) + "\t" + ap_old.getStart() + "\t" + ap_old.getEnd() + "\t" + ap_old.getAction().getName());
                 i = ap_old.getEnd();
                 foundActions.add(ap_old.getAction().getActionId());
+                ansList.add(ap_old);
             }
         }
+        
+        System.out.println();
+        System.out.println("The Levenshtein Distance is " + LogSlava.evaluateLog(ansList));
+        System.out.println();
     }
 
     
@@ -209,5 +219,5 @@ public class StSCorrection {
         long tmp = Math.round(value);
         return (double) tmp / factor;
     }
-
+    
 }

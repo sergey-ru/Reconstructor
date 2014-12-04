@@ -221,6 +221,7 @@ public class EventComparator implements Callable<ActionsPair> {
             for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
                 if (_seenActions.contains(_prevAction.getPrevious_action_id())) {
                     score = score * _prevAction.getCoefficient();
+                    //break;
                 }
             }
 
