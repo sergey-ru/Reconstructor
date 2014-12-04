@@ -38,7 +38,26 @@ public class StSCorrection {
         Date d = new Date();
 
         if (args.length == 0) {
-            Parallel_Test_Method();
+            Parallel_Test_Method(0.7,false,false);
+            Parallel_Test_Method(0.8,false,false);
+            Parallel_Test_Method(0.9,false,false);
+            Parallel_Test_Method(1.0,false,false);
+            Parallel_Test_Method(1.1,false,false);
+            Parallel_Test_Method(1.2,false,false);
+            Parallel_Test_Method(1.3,false,false);
+            Parallel_Test_Method(1.4,false,false);
+            Parallel_Test_Method(1.5,false,false);
+            System.out.println("Multiply");
+            Parallel_Test_Method(0.7,true,false);
+            Parallel_Test_Method(0.8,true,false);
+            Parallel_Test_Method(0.9,true,false);
+            Parallel_Test_Method(1.0,true,false);
+            Parallel_Test_Method(1.1,true,false);
+            Parallel_Test_Method(1.2,true,false);
+            Parallel_Test_Method(1.3,true,false);
+            Parallel_Test_Method(1.4,true,false);
+            Parallel_Test_Method(1.5,true,false);
+            
         } else {
             Parallel_Main_Method(args);
         }
@@ -46,7 +65,7 @@ public class StSCorrection {
         System.out.println("The end :)   " + (new Date().getTime() - d.getTime()) + "ms");
     }
 
-    private static void Parallel_Test_Method() {
+    private static void Parallel_Test_Method(double coefficient, boolean multiply, boolean fullPrint) {
         
         OperationType.init();
         
@@ -54,10 +73,14 @@ public class StSCorrection {
         
         maxOverLap = 1;
         
+        if (fullPrint)
+                {
+        
         System.out.println("Checking Log file");
         System.out.println("maxOverLap="+maxOverLap);
         System.out.println("maxSignature="+maxSignature);
         System.out.println();
+                }
         
         //SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logfile_042.CSV"), splitByStart, splitByEnd);
         SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV"), splitByStart, splitByEnd);
@@ -78,7 +101,7 @@ public class StSCorrection {
                     if(toCompare.length>maxSignature){
                         break;
                     }
-                    Future<ActionsPair> future = pool.submit(new EventComparator(toCompare,foundActions, i, j));
+                    Future<ActionsPair> future = pool.submit(new EventComparator(toCompare,foundActions, i, j, coefficient, multiply));
                     actions.add(future);
                     System.gc();
                 }
@@ -95,7 +118,10 @@ public class StSCorrection {
                 Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (ap_old != null) {
-                System.out.println(round(ap_old.getKey(), 3) + "\t" + ap_old.getStart() + "\t" + ap_old.getEnd() + "\t" + ap_old.getAction().getName());
+                if (fullPrint)
+                {
+                    System.out.println(round(ap_old.getKey(), 3) + "\t" + ap_old.getStart() + "\t" + ap_old.getEnd() + "\t" + ap_old.getAction().getName());
+                }
                 i = ap_old.getEnd();
                 foundActions.add(ap_old.getAction().getActionId());
                 ansList.add(ap_old);
@@ -103,7 +129,7 @@ public class StSCorrection {
         }
         
         System.out.println();
-        System.out.println("The Levenshtein Distance is " + LogSlava.evaluateLog(ansList));
+        System.out.println("Coefficient " +coefficient + "\t\tIs Multiply " +multiply+ "\tDistance " + LogSlava.evaluateLog(ansList));
         System.out.println();
     }
 
@@ -154,7 +180,7 @@ public class StSCorrection {
                             break;
                         }
                         
-                        Future<ActionsPair> future = pool.submit(new EventComparator(toCompare, foundActions, i, j));
+                        Future<ActionsPair> future = pool.submit(new EventComparator(toCompare, foundActions, i, j,-1,true));
 
                         actions.add(future);
                     }

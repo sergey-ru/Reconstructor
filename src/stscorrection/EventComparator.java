@@ -34,6 +34,8 @@ public class EventComparator implements Callable<ActionsPair> {
     private final HashSet<Integer> _seenActions;
     private final int _start;
     private final int _end;
+    private final double _coefficient;
+    private final boolean _multiply;
 
     //loadKnownActionsFromFolder
     public static int init(String URL, OperationType splitByStart, OperationType splitByEnd) {
@@ -205,11 +207,13 @@ public class EventComparator implements Callable<ActionsPair> {
         return name.substring(0, name.lastIndexOf(' '));
     }
 
-    public EventComparator(SystemEvent[] events, HashSet<Integer> seenActions, int start, int end) {
+    public EventComparator(SystemEvent[] events, HashSet<Integer> seenActions, int start, int end, double coefficient, boolean multiply) {
         this._events = events;
         this._start = start;
         this._end = end;
         this._seenActions = seenActions;
+        this._coefficient = coefficient;
+        this._multiply = multiply;
     }
 
     @Override
@@ -220,8 +224,17 @@ public class EventComparator implements Callable<ActionsPair> {
             double score = calcScore(_events, systemAction.getEvents());
             for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
                 if (_seenActions.contains(_prevAction.getPrevious_action_id())) {
-                    score = score * _prevAction.getCoefficient();
-                    //break;
+                    if(this._coefficient < 0){
+                        score = score * _prevAction.getCoefficient();
+                    }
+                    else
+                    {
+                        score = score * this._coefficient;
+                    }
+                    if(!_multiply)
+                    {
+                        break;
+                    }
                 }
             }
 
