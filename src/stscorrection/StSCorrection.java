@@ -86,7 +86,7 @@ public class StSCorrection {
                 }
         
         //SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logfile_042.CSV"), splitByStart, splitByEnd);
-        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV"), splitByStart, splitByEnd);
+        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV"), splitByStart, splitByEnd);
         HashSet<Integer> foundActions = new HashSet();
         LinkedList<Integer> seenActionsList = new LinkedList<>();
         ArrayList<ActionsPair> ansList = new ArrayList<>();
@@ -141,7 +141,7 @@ public class StSCorrection {
                 + "\t\t" 
                 +isDiferential
                 + "\t\t" 
-                + round(LogSergei.evaluateLog(ansList),2));
+                + round(LogSlava.evaluateLog(ansList),2));
     }
 
     
