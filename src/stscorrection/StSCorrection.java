@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,25 +39,27 @@ public class StSCorrection {
         Date d = new Date();
 
         if (args.length == 0) {
-            Parallel_Test_Method(0.7,false,false);
-            Parallel_Test_Method(0.8,false,false);
-            Parallel_Test_Method(0.9,false,false);
-            Parallel_Test_Method(1.0,false,false);
-            Parallel_Test_Method(1.1,false,false);
-            Parallel_Test_Method(1.2,false,false);
-            Parallel_Test_Method(1.3,false,false);
-            Parallel_Test_Method(1.4,false,false);
-            Parallel_Test_Method(1.5,false,false);
-            System.out.println("Multiply");
-            Parallel_Test_Method(0.7,true,false);
-            Parallel_Test_Method(0.8,true,false);
-            Parallel_Test_Method(0.9,true,false);
-            Parallel_Test_Method(1.0,true,false);
-            Parallel_Test_Method(1.1,true,false);
-            Parallel_Test_Method(1.2,true,false);
-            Parallel_Test_Method(1.3,true,false);
-            Parallel_Test_Method(1.4,true,false);
-            Parallel_Test_Method(1.5,true,false);
+            System.out.println("No Multiply - All length");
+            System.out.println("Coefficient"
+                    + "\t\t"
+                    + "Multiply"
+                    + "\t\t"
+                    +"maxLenght"
+                    + "\t\t"
+                    +"Diferential"
+                    + "\t\t"
+                    + "Distance");
+            
+            for (double i = 0.5; i < 2.1; i=i+0.1) {
+                Parallel_Test_Method(i,5,true,false,false);
+            }
+            
+//            System.out.println("Multiply - All length");
+//            System.out.println("Coefficient\t\tIs Multiply\t\tDistance");
+//            
+//            for (double i = 0; i < 2.1; i=i+0.1) {
+//                Parallel_Test_Method(i,-1,true,false,false);
+//            }
             
         } else {
             Parallel_Main_Method(args);
@@ -65,7 +68,7 @@ public class StSCorrection {
         System.out.println("The end :)   " + (new Date().getTime() - d.getTime()) + "ms");
     }
 
-    private static void Parallel_Test_Method(double coefficient, boolean multiply, boolean fullPrint) {
+    private static void Parallel_Test_Method(double coefficient, int maxLenght, boolean isDiferential ,boolean multiply, boolean fullPrint) {
         
         OperationType.init();
         
@@ -83,16 +86,17 @@ public class StSCorrection {
                 }
         
         //SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logfile_042.CSV"), splitByStart, splitByEnd);
-        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV"), splitByStart, splitByEnd);
+        SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV"), splitByStart, splitByEnd);
         HashSet<Integer> foundActions = new HashSet();
+        LinkedList<Integer> seenActionsList = new LinkedList<>();
         ArrayList<ActionsPair> ansList = new ArrayList<>();
         
         for (int i = 0; i < splitedArray.length; i++) {
             ActionsPair ap_old = null;
             SystemEvent[] toCompare = new SystemEvent[0];
             try {
-                //ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-                ExecutorService pool = Executors.newFixedThreadPool(1);
+                ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+                //ExecutorService pool = Executors.newFixedThreadPool(1);
 
                 List<Future<ActionsPair>> actions = new ArrayList<>();
                 for (int j = i; j < splitedArray.length && j < i+maxOverLap; j++) {
@@ -101,7 +105,7 @@ public class StSCorrection {
                     if(toCompare.length>maxSignature){
                         break;
                     }
-                    Future<ActionsPair> future = pool.submit(new EventComparator(toCompare,foundActions, i, j, coefficient, multiply));
+                    Future<ActionsPair> future = pool.submit(new EventComparator(toCompare,foundActions,seenActionsList, i, j, coefficient, maxLenght,isDiferential, multiply));
                     actions.add(future);
                     System.gc();
                 }
@@ -124,98 +128,105 @@ public class StSCorrection {
                 }
                 i = ap_old.getEnd();
                 foundActions.add(ap_old.getAction().getActionId());
+                seenActionsList.add(ap_old.getAction().getActionId());
                 ansList.add(ap_old);
             }
         }
         
-        System.out.println();
-        System.out.println("Coefficient " +coefficient + "\t\tIs Multiply " +multiply+ "\tDistance " + LogSlava.evaluateLog(ansList));
-        System.out.println();
+        System.out.println(round(coefficient, 2)
+                + "\t\t" 
+                +multiply
+                + "\t\t" 
+                +maxLenght
+                + "\t\t" 
+                +isDiferential
+                + "\t\t" 
+                + round(LogSergei.evaluateLog(ansList),2));
     }
 
     
     private static void Parallel_Main_Method(String[] args) {
-        OperationType.init();
-        maxOverLap = EventComparator.init(args[3], splitByStart, splitByEnd);
-        
-        if(Integer.parseInt(args[1]) > 0)
-        {
-            maxOverLap = Integer.parseInt(args[1]);
-        }
-        
-        if(Integer.parseInt(args[2]) > 0)
-        {
-            maxSignature = Integer.parseInt(args[2]);
-        }
-
-        if (args[0].contains("0")) {
-            System.out.println("Compare All Known Actions");
-            EventComparator.compareAllKnownActions();
-        } else if (args[0].contains("1")) {
-
-            System.out.println("Checking Log file");
-            System.out.println("maxOverLap="+maxOverLap);
-            System.out.println("maxSignature="+maxSignature);
-            System.out.println();
-            StringBuilder sb = new StringBuilder();
-            SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile(args[4]), splitByStart, splitByEnd);
-            HashSet<Integer> foundActions = new HashSet();
-            
-            
-            for (int i = 0; i < splitedArray.length; i++) {
-                
-                SystemEvent[] toCompare = new SystemEvent[0];
-                ActionsPair ap_old = null;
-                
-                System.out.println((i+1)+" from "+splitedArray.length);
-                
-                try {
-                    ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-                    List<Future<ActionsPair>> actions = new ArrayList<>();
-
-                    for (int j = i; j < splitedArray.length && j < i+maxOverLap; j++) {
-                        toCompare = ArrayUtils.addAll(toCompare, splitedArray[j]);
-                        
-                        if(toCompare.length>maxSignature){
-                            break;
-                        }
-                        
-                        Future<ActionsPair> future = pool.submit(new EventComparator(toCompare, foundActions, i, j,-1,true));
-
-                        actions.add(future);
-                    }
-
-                    pool.shutdown();
-
-                    for (Future<ActionsPair> actionsPair : actions) {
-                        if ((actionsPair.get().getKey() > 0.5) && (ap_old == null || ap_old.getKey() < actionsPair.get().getKey())) {
-                            ap_old = actionsPair.get();
-                        }
-                    }
-
-                    pool = null;
-                    actions = null;
-                    System.gc();
-
-                } catch (Exception ex) {
-                    Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (ap_old != null) {
-                    sb.append(round(ap_old.getKey(), 3)).append("\t").append(ap_old.getStart()).append("\t").append(ap_old.getEnd()).append("\t").append(ap_old.getAction().getName());
-                    sb.append(System.getProperty("line.separator"));
-                    i = ap_old.getEnd();
-                    foundActions.add(ap_old.getAction().getActionId());
-                }
-            }
-            try {
-                BufferedWriter out = new BufferedWriter(new FileWriter(args[5]));
-                out.write(sb.toString());
-                out.close();
-            } catch (Exception ex) {
-                Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
+//        OperationType.init();
+//        maxOverLap = EventComparator.init(args[3], splitByStart, splitByEnd);
+//        
+//        if(Integer.parseInt(args[1]) > 0)
+//        {
+//            maxOverLap = Integer.parseInt(args[1]);
+//        }
+//        
+//        if(Integer.parseInt(args[2]) > 0)
+//        {
+//            maxSignature = Integer.parseInt(args[2]);
+//        }
+//
+//        if (args[0].contains("0")) {
+//            System.out.println("Compare All Known Actions");
+//            EventComparator.compareAllKnownActions();
+//        } else if (args[0].contains("1")) {
+//
+//            System.out.println("Checking Log file");
+//            System.out.println("maxOverLap="+maxOverLap);
+//            System.out.println("maxSignature="+maxSignature);
+//            System.out.println();
+//            StringBuilder sb = new StringBuilder();
+//            SystemEvent[][] splitedArray = LogReader.splitEventArray(LogReader.readLogFile(args[4]), splitByStart, splitByEnd);
+//            HashSet<Integer> foundActions = new HashSet();
+//            
+//            
+//            for (int i = 0; i < splitedArray.length; i++) {
+//                
+//                SystemEvent[] toCompare = new SystemEvent[0];
+//                ActionsPair ap_old = null;
+//                
+//                System.out.println((i+1)+" from "+splitedArray.length);
+//                
+//                try {
+//                    ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//                    List<Future<ActionsPair>> actions = new ArrayList<>();
+//
+//                    for (int j = i; j < splitedArray.length && j < i+maxOverLap; j++) {
+//                        toCompare = ArrayUtils.addAll(toCompare, splitedArray[j]);
+//                        
+//                        if(toCompare.length>maxSignature){
+//                            break;
+//                        }
+//                        
+//                        Future<ActionsPair> future = pool.submit(new EventComparator(toCompare, foundActions, i, j,-1,true));
+//
+//                        actions.add(future);
+//                    }
+//
+//                    pool.shutdown();
+//
+//                    for (Future<ActionsPair> actionsPair : actions) {
+//                        if ((actionsPair.get().getKey() > 0.5) && (ap_old == null || ap_old.getKey() < actionsPair.get().getKey())) {
+//                            ap_old = actionsPair.get();
+//                        }
+//                    }
+//
+//                    pool = null;
+//                    actions = null;
+//                    System.gc();
+//
+//                } catch (Exception ex) {
+//                    Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if (ap_old != null) {
+//                    sb.append(round(ap_old.getKey(), 3)).append("\t").append(ap_old.getStart()).append("\t").append(ap_old.getEnd()).append("\t").append(ap_old.getAction().getName());
+//                    sb.append(System.getProperty("line.separator"));
+//                    i = ap_old.getEnd();
+//                    foundActions.add(ap_old.getAction().getActionId());
+//                }
+//            }
+//            try {
+//                BufferedWriter out = new BufferedWriter(new FileWriter(args[5]));
+//                out.write(sb.toString());
+//                out.close();
+//            } catch (Exception ex) {
+//                Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//        }
     }
 
     private static void printStart()

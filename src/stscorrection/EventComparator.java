@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
@@ -31,10 +32,13 @@ public class EventComparator implements Callable<ActionsPair> {
 
     private static ActionSignature[] _actions;
     private SystemEvent[] _events;
-    private final HashSet<Integer> _seenActions;
+    private final HashSet<Integer> _seenActionsHash;
+    private final LinkedList<Integer> _seenActionsList;
     private final int _start;
     private final int _end;
+    private final int _maxLenght;
     private final double _coefficient;
+    private final boolean _isDiferential;
     private final boolean _multiply;
 
     //loadKnownActionsFromFolder
@@ -207,13 +211,16 @@ public class EventComparator implements Callable<ActionsPair> {
         return name.substring(0, name.lastIndexOf(' '));
     }
 
-    public EventComparator(SystemEvent[] events, HashSet<Integer> seenActions, int start, int end, double coefficient, boolean multiply) {
+    public EventComparator(SystemEvent[] events, HashSet<Integer> seenActions, LinkedList<Integer> seenActionsList, int start, int end, double coefficient, int maxLenght, boolean isDiferential, boolean multiply) {
         this._events = events;
         this._start = start;
         this._end = end;
-        this._seenActions = seenActions;
+        this._seenActionsHash = seenActions;
+        this._seenActionsList = seenActionsList;
         this._coefficient = coefficient;
         this._multiply = multiply;
+        this._maxLenght = maxLenght;
+        this._isDiferential = isDiferential;
     }
 
     @Override
@@ -222,20 +229,100 @@ public class EventComparator implements Callable<ActionsPair> {
 
         for (ActionSignature systemAction : _actions) {
             double score = calcScore(_events, systemAction.getEvents());
+
             for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
-                if (_seenActions.contains(_prevAction.getPrevious_action_id())) {
-                    if(this._coefficient < 0){
-                        score = score * _prevAction.getCoefficient();
+                if (_maxLenght < 0)//No max Length 
+                {
+                    //no difrential 
+                    if (!_isDiferential) {
+                        if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
+                            if (this._coefficient < 0) {
+                                score = score * _prevAction.getCoefficient();
+                            } else {
+                                score = score * this._coefficient;
+                            }
+                            if (!_multiply) {
+                                break;
+                            }
+                        }
+                    } else {
+                        //difrential 
+                        if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
+
+                            double pos = 1;
+
+                            for (int i = 0; i < _seenActionsList.size(); i++) {
+                                if (_seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
+                                    pos = (i + 1) / _seenActionsList.size();
+                                    break;
+                                }
+                            }
+
+                            if (this._coefficient < 0) {
+                                score = pos * score * _prevAction.getCoefficient();
+                            } else {
+                                score = pos * score * this._coefficient;
+                            }
+                            if (!_multiply) {
+                                break;
+                            }
+                        }
                     }
-                    else
-                    {
-                        score = score * this._coefficient;
-                    }
-                    if(!_multiply)
-                    {
-                        break;
+
+                } else // Max Length 
+                {
+                    //no difrential 
+                    if (!_isDiferential) {
+                        if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
+
+                            double pos = Double.NEGATIVE_INFINITY;
+
+                            for (int i = 0; i < _seenActionsList.size(); i++) {
+                                if (_seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
+                                    pos = (i + 1);
+                                    break;
+                                }
+                            }
+                            if (_seenActionsList.size() - pos <= _maxLenght) {
+                                if (this._coefficient < 0) {
+                                    score = score * _prevAction.getCoefficient();
+                                } else {
+                                    score = score * this._coefficient;
+                                }
+                                if (!_multiply) {
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        //difrential 
+                        if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
+
+                            double pos = Double.NEGATIVE_INFINITY;
+
+                            for (int i = 0; i < _seenActionsList.size(); i++) {
+                                if (_seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
+                                    pos = (i + 1);
+                                    break;
+                                }
+                            }
+                            if (_seenActionsList.size() - pos <= _maxLenght) {
+
+                                pos = pos / _seenActionsList.size();
+
+                                if (this._coefficient < 0) {
+                                    score = pos * score * _prevAction.getCoefficient();
+                                } else {
+                                    score = pos * score * this._coefficient;
+                                }
+                                if (!_multiply) {
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
+
             }
 
             map.put(score, systemAction);
