@@ -6,7 +6,6 @@
 package stscorrection;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,6 +36,11 @@ public class LogReader {
                 actionPossitions.add(i);
                 startMode = true;
             }
+        }
+        
+        if(actionPossitions.size()%2!=0)
+        {
+            actionPossitions.add(eventArray.length-1);
         }
         
         ans = new SystemEvent[(actionPossitions.size()+1)/2][];

@@ -71,7 +71,8 @@ public class SystemEvent{
             }
         }
         else{
-            Logger.getLogger(SystemEvent.class.getName()).log(Level.SEVERE, null, "Unable to parse the CSV row in constructor.");
+            //System.err.println(p_CSVRow);
+            //Logger.getLogger(SystemEvent.class.getName()).log(Level.SEVERE, null, "Unable to parse the CSV row in constructor.");
         }
     }
     
