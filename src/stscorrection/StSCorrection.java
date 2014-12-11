@@ -39,7 +39,7 @@ public class StSCorrection {
         Date d = new Date();
 
         if (args.length == 0) {
-            System.out.println("No Multiply - All length");
+            //System.out.println("No Multiply - All length");
             System.out.println("Coefficient"
                     + "\t\t"
                     + "Multiply"
@@ -50,16 +50,79 @@ public class StSCorrection {
                     + "\t\t"
                     + "Distance");
             
-            for (double i = 0.5; i < 2.1; i=i+0.1) {
+            
+            System.out.println("maxLenght=all, isDiferential=false, multiply=false");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,-1,false,false,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,-1,false,false,false);
+            }
+            
+            System.out.println("maxLenght=all, isDiferential=false, multiply=true");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,-1,false,true,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,-1,false,true,false);
+            }
+            
+            System.out.println("maxLenght=all, isDiferential=true, multiply=false");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,-1,true,false,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,-1,true,false,false);
+            }
+            
+            System.out.println("maxLenght=all, isDiferential=true, multiply=true");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,-1,true,true,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,-1,true,true,false);
+            }
+            
+            System.out.println("maxLenght=5, isDiferential=false, multiply=false");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,5,false,false,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,5,false,false,false);
+            }
+            
+            System.out.println("maxLenght=5, isDiferential=false, multiply=true");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,5,false,true,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,5,false,true,false);
+            }
+            
+            System.out.println("maxLenght=5, isDiferential=true, multiply=false");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,5,true,false,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
                 Parallel_Test_Method(i,5,true,false,false);
             }
             
-//            System.out.println("Multiply - All length");
-//            System.out.println("Coefficient\t\tIs Multiply\t\tDistance");
-//            
-//            for (double i = 0; i < 2.1; i=i+0.1) {
-//                Parallel_Test_Method(i,-1,true,false,false);
-//            }
+            System.out.println("maxLenght=5, isDiferential=true, multiply=true");
+            
+            for (double i = 0; i < 2; i=i+0.1) {
+                Parallel_Test_Method(i,5,true,true,false);
+            }
+            for (double i = 2; i < 11; i=i+1) {
+                Parallel_Test_Method(i,5,true,true,false);
+            }
+            
             
         } else {
             Parallel_Main_Method(args);
@@ -141,7 +204,7 @@ public class StSCorrection {
                 + "\t\t" 
                 +isDiferential
                 + "\t\t" 
-                + round(LogSlava.evaluateLog(ansList),2));
+                + round(LogSlava.evaluateLog(ansList),4));
     }
 
     

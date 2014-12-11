@@ -259,8 +259,14 @@ public class EventComparator implements Callable<ActionsPair> {
                             }
 
                             if (this._coefficient < 0) {
+                                
+                                //pos = 1 + pos * (_prevAction.getCoefficient() -1 );
+                                
                                 score = pos * score * _prevAction.getCoefficient();
                             } else {
+                                
+                                //pos = 1 + pos * (this._coefficient -1 );
+                                
                                 score = pos * score * this._coefficient;
                             }
                             if (!_multiply) {
@@ -309,10 +315,16 @@ public class EventComparator implements Callable<ActionsPair> {
                             if (_seenActionsList.size() - pos <= _maxLenght) {
 
                                 pos = pos / _seenActionsList.size();
-
+                                
                                 if (this._coefficient < 0) {
+                                    
+                                    //pos = 1 + pos * (_prevAction.getCoefficient() -1 );
+                                    
                                     score = pos * score * _prevAction.getCoefficient();
                                 } else {
+                                    
+                                    //pos = 1 + pos * (this._coefficient -1 );
+                                    
                                     score = pos * score * this._coefficient;
                                 }
                                 if (!_multiply) {
