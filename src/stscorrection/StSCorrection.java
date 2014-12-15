@@ -21,6 +21,9 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.ArrayUtils;
+import stscorrection.Evaluation.LogAlex;
+import stscorrection.Evaluation.LogAmit;
+import stscorrection.Evaluation.LogGay;
 import stscorrection.Evaluation.LogSergei;
 import stscorrection.Evaluation.LogSlava;
 
@@ -75,15 +78,18 @@ public class StSCorrection {
         
         printStart();
 
+        Parallel_Test_Method(1, -1, false, false, false,"/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_amit.CSV");
+        
+        
         Date d = new Date();
 
-        if (args.length == 0) {
-
-            Run_type_02();
-
-        } else {
-            Parallel_Main_Method(args);
-        }
+//        if (args.length == 0) {
+//
+//            Run_type_02();
+//
+//        } else {
+//            Parallel_Main_Method(args);
+//        }
 
         System.out.println("The end :)   " + (new Date().getTime() - d.getTime()) + "ms");
     }
@@ -216,7 +222,7 @@ public class StSCorrection {
         maxOverLap = EventComparator_NF.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
 
         maxOverLap = 1;
-
+        
         if (fullPrint) {
 
             System.out.println("Checking Log file");
@@ -280,7 +286,7 @@ public class StSCorrection {
                 + "\t\t"
                 + isDiferential
                 + "\t\t"
-                + round(LogSlava.evaluateLog(ansList), 4));
+                + round(LogAmit.evaluateLog(ansList), 4));
     }
 
     private static void Parallel_Main_Method(String[] args) {
