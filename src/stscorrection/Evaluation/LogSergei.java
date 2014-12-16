@@ -12,9 +12,9 @@ import stscorrection.ActionsPair;
  *
  * @author sergei
  */
-public class LogSergei {
+public class LogSergei implements ILogEvaluator{
     
-    public static double evaluateLog(ArrayList<ActionsPair> actionList)
+    public double evaluateLog(ArrayList<ActionsPair> actionList)
     {
         String [] ref = new String[]
         {

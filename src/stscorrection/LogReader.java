@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class LogReader {
 
-    public static SystemEvent[] readLogFile(String filePath) {
-        SystemEvent[] ans = SystemEvent.readCSV(filePath);
+    public static SystemEvent[] readLogFile(String filePath, double logPercentage) {
+        SystemEvent[] ans = SystemEvent.readCSV(filePath, logPercentage);
         return ans;
     }
 

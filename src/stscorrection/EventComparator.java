@@ -116,7 +116,7 @@ public class EventComparator implements Callable<ActionsPair> {
                     path = URL + "\\" + file.getName();
                 }
                 String name = file.getName();
-                list.add(new ActionSignature(SystemEvent.readCSV(path), trimName(name)));
+                list.add(new ActionSignature(SystemEvent.readCSV(path,1), trimName(name)));
             }
         }
         _actions = new ActionSignature[list.size()];

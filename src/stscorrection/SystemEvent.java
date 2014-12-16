@@ -76,9 +76,8 @@ public class SystemEvent{
         }
     }
     
-    public static SystemEvent[] readCSV(String path) {
+    public static SystemEvent[] readCSV(String path, double percentage) {
         List<SystemEvent> events = new LinkedList<>();
-        SystemEvent[] ans;
         String csvFile = path;
         BufferedReader br = null;
         String line;
@@ -89,7 +88,7 @@ public class SystemEvent{
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 count++;
-                if (count != 1) {
+                if (count != 1 && percentage > Math.random()) {
                     events.add(new SystemEvent(line));
                 }
             }
