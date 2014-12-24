@@ -47,16 +47,16 @@ public class StSCorrection {
 
         Date d = new Date();
 
-        Run_Log_NF();
-        
-        System.out.println("Log_NF Done :)");
-        
-        Run_Log_NF_maxLenght();
-        
-        System.out.println("Log_NF_maxLenght Done :)");
-        
+//        Run_Log_NF();
+//
+//        System.out.println("Log_NF Done :)");
+//
+//        Run_Log_NF_maxLenght();
+//
+//        System.out.println("Log_NF_maxLenght Done :)");
+
         Run_Log_NF_LogRemove();
-        
+
         System.out.println("Log_NF_LogRemove Done :)");
 
         System.out.println("The end :)   " + (new Date().getTime() - d.getTime()) + "ms");
@@ -67,37 +67,41 @@ public class StSCorrection {
             StringBuffer sb = new StringBuffer();
             BufferedWriter bwr;
 
-            Log_NF("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV", sb, new LogSergei());
+            Log_NF("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Sergei.CSV", sb, new LogSergei());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_Log_Sergei.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_Log_Sergei.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV", sb, new LogSlava());
+            sb = new StringBuffer();
+            Log_NF("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Slava.CSV", sb, new LogSlava());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_Log_Slava.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_Log_Slava.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_alex.CSV", sb, new LogAlex());
+            sb = new StringBuffer();
+            Log_NF("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_alex.CSV", sb, new LogAlex());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_Log_alex.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_Log_alex.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_gay.CSV", sb, new LogGay());
+            sb = new StringBuffer();
+            Log_NF("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_gay.CSV", sb, new LogGay());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_Log_gay.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_Log_gay.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_amit.CSV", sb, new LogAmit());
+            sb = new StringBuffer();
+            Log_NF("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_amit.CSV", sb, new LogAmit());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_Log_amit.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_Log_amit.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
@@ -112,37 +116,41 @@ public class StSCorrection {
             StringBuffer sb = new StringBuffer();
             BufferedWriter bwr;
 
-            Log_NF_maxLenght("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV", sb, new LogSergei());
+            Log_NF_maxLenght("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Sergei.CSV", sb, new LogSergei());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_maxLenght_Log_Sergei.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_maxLenght_Log_Sergei.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_maxLenght("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV", sb, new LogSlava());
+            sb = new StringBuffer();
+            Log_NF_maxLenght("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Slava.CSV", sb, new LogSlava());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_maxLenght_Log_Slava.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_maxLenght_Log_Slava.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_maxLenght("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_alex.CSV", sb, new LogAlex());
+            sb = new StringBuffer();
+            Log_NF_maxLenght("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_alex.CSV", sb, new LogAlex());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_maxLenght_Log_alex.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_maxLenght_Log_alex.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_maxLenght("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_gay.CSV", sb, new LogGay());
+            sb = new StringBuffer();
+            Log_NF_maxLenght("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_gay.CSV", sb, new LogGay());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_maxLenght_Log_gay.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_maxLenght_Log_gay.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_maxLenght("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_amit.CSV", sb, new LogAmit());
+            sb = new StringBuffer();
+            Log_NF_maxLenght("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_amit.CSV", sb, new LogAmit());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_maxLenght_Log_amit.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_maxLenght_Log_amit.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
@@ -157,37 +165,41 @@ public class StSCorrection {
             StringBuffer sb = new StringBuffer();
             BufferedWriter bwr;
 
-            Log_NF_LogRemove("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV", sb, new LogSergei());
+            Log_NF_LogRemove("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Sergei.CSV", sb, new LogSergei());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_LogRemove_Log_Sergei.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_LogRemove_Log_Sergei.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_LogRemove("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV", sb, new LogSlava());
+            sb = new StringBuffer();
+            Log_NF_LogRemove("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Slava.CSV", sb, new LogSlava());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_LogRemove_Log_Slava.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_LogRemove_Log_Slava.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_LogRemove("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_alex.CSV", sb, new LogAlex());
+            sb = new StringBuffer();
+            Log_NF_LogRemove("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_alex.CSV", sb, new LogAlex());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_LogRemove_Log_alex.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_LogRemove_Log_alex.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_LogRemove("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_gay.CSV", sb, new LogGay());
+            sb = new StringBuffer();
+            Log_NF_LogRemove("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_gay.CSV", sb, new LogGay());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_LogRemove_Log_gay.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_LogRemove_Log_gay.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
 
-            Log_NF_LogRemove("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_amit.CSV", sb, new LogAmit());
+            sb = new StringBuffer();
+            Log_NF_LogRemove("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_amit.CSV", sb, new LogAmit());
 
-            bwr = new BufferedWriter(new FileWriter("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/NF_LogRemove_Log_amit.CSV"));
+            bwr = new BufferedWriter(new FileWriter("C:\\Users\\sergeyru\\Downloads\\1\\results\\NF_LogRemove_Log_amit.CSV"));
             bwr.write(sb.toString());
             bwr.flush();
             bwr.close();
@@ -196,7 +208,7 @@ public class StSCorrection {
             Logger.getLogger(StSCorrection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private static void Log_NF(String name, StringBuffer sb, ILogEvaluator evaluator) {
         //System.out.println("No Multiply - All length");
         if (sb == null) {
@@ -219,7 +231,7 @@ public class StSCorrection {
             sb.append("maxLenght=all, isDiferential=false, multiply=false").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, -1, false, false, name, 1, sb, evaluator);
         }
 
@@ -229,7 +241,7 @@ public class StSCorrection {
             sb.append("maxLenght=all, isDiferential=false, multiply=true").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, -1, false, true, name, 1, sb, evaluator);
         }
 
@@ -239,7 +251,7 @@ public class StSCorrection {
             sb.append("maxLenght=all, isDiferential=true, multiply=false").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, -1, true, false, name, 1, sb, evaluator);
         }
 
@@ -249,7 +261,7 @@ public class StSCorrection {
             sb.append("maxLenght=all, isDiferential=true, multiply=true").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, -1, true, true, name, 1, sb, evaluator);
         }
 
@@ -259,7 +271,7 @@ public class StSCorrection {
             sb.append("maxLenght=5, isDiferential=false, multiply=false").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, 5, false, false, name, 1, sb, evaluator);
         }
 
@@ -269,7 +281,7 @@ public class StSCorrection {
             sb.append("maxLenght=5, isDiferential=false, multiply=true").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, 5, false, true, name, 1, sb, evaluator);
         }
 
@@ -279,7 +291,7 @@ public class StSCorrection {
             sb.append("maxLenght=5, isDiferential=true, multiply=false").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, 5, true, false, name, 1, sb, evaluator);
         }
 
@@ -289,7 +301,7 @@ public class StSCorrection {
             sb.append("maxLenght=5, isDiferential=true, multiply=true").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, 5, true, true, name, 1, sb, evaluator);
         }
     }
@@ -316,7 +328,7 @@ public class StSCorrection {
             sb.append("maxLenght=all, isDiferential=true, multiply=false").append(System.lineSeparator());
         }
 
-        for (double i = 0; i <= 2; i = i + 0.1) {
+        for (double i = 0; i < 2.1; i = i + 0.1) {
             Parallel_Test_Method(i, -1, true, false, name, 1, sb, evaluator);
         }
 
@@ -327,7 +339,7 @@ public class StSCorrection {
                 sb.append("maxLenght=").append(j + 1).append(", isDiferential=true, multiply=false").append(System.lineSeparator());
             }
 
-            for (double i = 0; i <= 2; i = i + 0.1) {
+            for (double i = 0; i < 2.1; i = i + 0.1) {
                 Parallel_Test_Method(i, j, true, false, name, 1, sb, evaluator);
             }
         }
@@ -355,17 +367,17 @@ public class StSCorrection {
             sb.append("maxLenght=1, isDiferential=true, multiply=false").append(System.lineSeparator());
         }
 
-        for (int runNum = 0; runNum < 1; runNum++) {
+        for (double logPercent = 1; logPercent >= 0.5; logPercent -= 0.05) {
 
-            for (double logPercent = 1; logPercent >= 0.5; logPercent -= 0.05) {
+            for (int runNum = 0; runNum < 10; runNum++) {
 
                 if (sb == null) {
-                    System.out.println("runNum="+runNum+", logPercent="+logPercent);
+                    System.out.println("runNum=" + runNum + ", logPercent=" + logPercent);
                 } else {
-                    sb.append("runNum=").append(runNum).append(", logPercent=").append(logPercent).append(System.lineSeparator());
+                    sb.append("runNum=").append(runNum).append(", logPercent=").append(round(logPercent, 2)).append(System.lineSeparator());
                 }
 
-                for (double i = 0; i <= 2; i = i + 0.1) {
+                for (double i = 0; i < 2.1; i = i + 0.1) {
                     Parallel_Test_Method(i, 0, true, false, name, logPercent, sb, evaluator);
                 }
             }
@@ -377,7 +389,8 @@ public class StSCorrection {
 
         OperationType.init();
 
-        maxOverLap = EventComparator_NF.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
+        //maxOverLap = EventComparator_NF.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
+        maxOverLap = EventComparator_NF.init("C:\\Users\\sergeyru\\Downloads\\1\\taxonomy", splitByStart, splitByEnd);
 
         maxOverLap = 1;
 
@@ -399,7 +412,7 @@ public class StSCorrection {
             ActionsPair ap_old = null;
             SystemEvent[] toCompare = new SystemEvent[0];
             try {
-                ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+                ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
                 //ExecutorService pool = Executors.newFixedThreadPool(1);
 
                 List<Future<ActionsPair>> actions = new ArrayList<>();
