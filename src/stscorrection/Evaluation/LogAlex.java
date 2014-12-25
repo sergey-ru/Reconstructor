@@ -14,6 +14,7 @@ import stscorrection.ActionsPair;
  */
 public class LogAlex implements ILogEvaluator{
     
+    @Override
     public double evaluateLog(ArrayList<ActionsPair> actionList)
     {
         String [] ref = new String[]
