@@ -33,12 +33,11 @@ public class EventComparator_NF implements Callable<ActionsPair> {
     private static ActionSignature[] _actions;
     private SystemEvent[] _events;
     private final HashSet<Integer> _seenActionsHash;
-    private final LinkedList<Integer> _seenActionsList;
+    private final ArrayList<Integer> _seenActionsList;
     private final int _start;
     private final int _end;
-    private final int _maxLenght;
+    private final int _maxLength;
     private final double _coefficient;
-    private final boolean _isDiferential;
     private final boolean _multiply;
 
     //loadKnownActionsFromFolder
@@ -116,7 +115,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
                     path = URL + "\\" + file.getName();
                 }
                 String name = file.getName();
-                list.add(new ActionSignature(SystemEvent.readCSV(path,1), trimName(name)));
+                list.add(new ActionSignature(SystemEvent.readCSV(path, 1), trimName(name)));
             }
         }
         _actions = new ActionSignature[list.size()];
@@ -164,7 +163,10 @@ public class EventComparator_NF implements Callable<ActionsPair> {
     }
 
     private static double calcScore(SystemEvent[] i, SystemEvent[] j) {
-        return 1 - algX(i, j) / Math.max(i.length, j.length);
+        //System.out.println(algX(i,j));
+
+        //return 1 - algX(i, j) / Math.max(i.length, j.length);
+        return 1 - LevinshteinDistance.iLD(i, j) / Math.max(i.length, j.length);
     }
 
     //Levenshtein Distance
@@ -211,7 +213,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
         return name.substring(0, name.lastIndexOf(' '));
     }
 
-    public EventComparator_NF(SystemEvent[] events, HashSet<Integer> seenActions, LinkedList<Integer> seenActionsList, int start, int end, double coefficient, int maxLenght, boolean isDiferential, boolean multiply) {
+    public EventComparator_NF(SystemEvent[] events, HashSet<Integer> seenActions, ArrayList<Integer> seenActionsList, int start, int end, double coefficient, int maxLength, boolean multiply) {
         this._events = events;
         this._start = start;
         this._end = end;
@@ -219,8 +221,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
         this._seenActionsList = seenActionsList;
         this._coefficient = coefficient;
         this._multiply = multiply;
-        this._maxLenght = maxLenght;
-        this._isDiferential = isDiferential;
+        this._maxLength = maxLength;
     }
 
     @Override
@@ -231,7 +232,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
             double LD = calcScore(_events, systemAction.getEvents());
 
             for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
-                if (_maxLenght < 0)//No max Length 
+                if (_maxLength < 0)//No max Length 
                 {
                     //difrential 
                     if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
@@ -249,19 +250,51 @@ public class EventComparator_NF implements Callable<ActionsPair> {
 
                             //TxD = 1 + TxD * (_prevAction.getCoefficient() -1 );
                             //LD = TxD * LD * _prevAction.getCoefficient();
-                            LD = LD * _prevAction.getCoefficient() + TxD*( 1 - _prevAction.getCoefficient());
+                            LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
                         } else {
 
                             //TxD = 1 + TxD * (this._coefficient -1 );
                             //LD = TxD * LD * this._coefficient;
-                            LD = LD * this._coefficient + TxD*( 1 - this._coefficient);
+                            LD = LD * this._coefficient + TxD * (1 - this._coefficient);
                         }
                         if (!_multiply) {
                             break;
                         }
                     }
 
-                } else // Max Length 
+                } //                else if(_maxLength == Integer.MIN_VALUE)
+                //                {
+                //                    //difrential 
+                //                    if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
+                //
+                //                        double TxD = Double.NEGATIVE_INFINITY;
+                //
+                //                        for (int i = 0; i < _seenActionsList.length; i++) {
+                //                            if (_seenActionsList[i] == _prevAction.getPrevious_action_id()) {
+                //                                TxD = (i + 1);
+                //                                break;
+                //                            }
+                //                        }
+                //                        if (_seenActionsList.length == TxD || (_seenActionsList.length-6) == TxD) {
+                //
+                //                            TxD = TxD / _seenActionsList.length;
+                //
+                //                            if (this._coefficient < 0) {
+                //
+                //                                LD = LD * _prevAction.getCoefficient() + TxD*( 1 - _prevAction.getCoefficient());
+                //                                
+                //                            } else {
+                //
+                //                                LD = LD * this._coefficient + TxD*( 1 - this._coefficient);
+                //                                
+                //                            }
+                //                            if (!_multiply) {
+                //                                break;
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                else // Max Length 
                 {
                     //difrential 
                     if (_seenActionsHash.contains(_prevAction.getPrevious_action_id())) {
@@ -274,7 +307,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
                                 break;
                             }
                         }
-                        if (_seenActionsList.size() - TxD <= _maxLenght) {
+                        if (_seenActionsList.size() - TxD <= _maxLength) {
 
                             TxD = TxD / _seenActionsList.size();
 
@@ -282,12 +315,12 @@ public class EventComparator_NF implements Callable<ActionsPair> {
 
                                 //TxD = 1 + TxD * (_prevAction.getCoefficient() -1 );
                                 //LD = TxD * LD * _prevAction.getCoefficient();
-                                LD = LD * _prevAction.getCoefficient() + TxD*( 1 - _prevAction.getCoefficient());
+                                LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
                             } else {
 
                                 //TxD = 1 + TxD * (this._coefficient -1 );
                                 //LD = TxD * LD * this._coefficient;
-                                LD = LD * this._coefficient + TxD*( 1 - this._coefficient);
+                                LD = LD * this._coefficient + TxD * (1 - this._coefficient);
                             }
                             if (!_multiply) {
                                 break;
@@ -301,8 +334,122 @@ public class EventComparator_NF implements Callable<ActionsPair> {
             map.put(LD, systemAction);
         }
         _events = null;
-        System.gc();
+        //System.gc();
         return new ActionsPair((double) map.lastEntry().getKey(), (ActionSignature) map.lastEntry().getValue(), _start, _end);
+    }
+
+    public static ActionsPair CompareEvents(SystemEvent[] events, HashSet<Integer> seenActions, ArrayList<Integer> seenActionsList, int start, int end, double coefficient, int maxLength, boolean multiply) {
+        TreeMap map = new TreeMap();
+
+        for (ActionSignature systemAction : _actions) {
+            if (((double) systemAction.getEvents().length / events.length) < 2 && ((double) systemAction.getEvents().length / events.length) > 0.5) {
+                double LD = calcScore(events, systemAction.getEvents());
+
+                double TxD = 0;
+                int TxD_position = -1;
+                double _prevActionCoefficient = -1;
+
+                for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
+                    if (seenActions.contains(_prevAction.getPrevious_action_id())) {
+                        for (int i = seenActionsList.size() - 1; i >= 0 && (seenActionsList.size() - i <= maxLength); i--) {
+                            if (seenActionsList.get(i) == _prevAction.getPrevious_action_id() && TxD_position < i) {
+                                TxD_position = i;
+                                _prevActionCoefficient = _prevAction.getCoefficient();
+                                break;
+                            }
+                        }
+                        if (multiply && TxD_position != -1) {
+
+                            TxD += (TxD_position + 1) / seenActionsList.size();
+                            TxD_position = -1;
+                        }
+                    }
+                }
+                if (!multiply && TxD_position != -1) {
+                    TxD = (TxD_position + 1) / seenActionsList.size();
+
+                }
+
+                if (coefficient < 0) {
+
+                    LD = LD * _prevActionCoefficient + TxD * (1 - _prevActionCoefficient);
+                } else {
+
+                    LD = LD * coefficient + TxD * (1 - coefficient);
+                }
+
+//                for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
+//
+//                    if (maxLength < 0)//No max Length 
+//                    {
+//                        //difrential 
+//                        if (seenActions.contains(_prevAction.getPrevious_action_id())) {
+//
+//                            TxD = 1;
+//
+//                            for (int i = 0; i < seenActionsList.size(); i++) {
+//                                if (seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
+//                                    TxD = (i + 1) / seenActionsList.size();
+//                                    break;
+//                                }
+//                            }
+//
+//                            if (coefficient < 0) {
+//
+//                                //TxD = 1 + TxD * (_prevAction.getCoefficient() -1 );
+//                                //LD = TxD * LD * _prevAction.getCoefficient();
+//                                LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
+//                            } else {
+//
+//                                //TxD = 1 + TxD * (this._coefficient -1 );
+//                                //LD = TxD * LD * this._coefficient;
+//                                LD = LD * coefficient + TxD * (1 - coefficient);
+//                            }
+//                            if (!multiply) {
+//                                break;
+//                            }
+//                        }
+//
+//                    } else // Max Length 
+//                    {
+//                        //difrential 
+//                        if (seenActions.contains(_prevAction.getPrevious_action_id())) {
+//
+//                            TxD = Double.NEGATIVE_INFINITY;
+//
+//                            for (int i = 0; i < seenActionsList.size(); i++) {
+//                                if (seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
+//                                    TxD = (i + 1);
+//                                    break;
+//                                }
+//                            }
+//                            if (seenActionsList.size() - TxD <= maxLength) {
+//
+//                                TxD = TxD / seenActionsList.size();
+//
+//                                if (coefficient < 0) {
+//
+//                                    LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
+//                                } else {
+//
+//                                    LD = LD * coefficient + TxD * (1 - coefficient);
+//                                }
+//                                if (!multiply) {
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+//            }
+                map.put(LD, systemAction);
+            }
+        }
+        events = null;
+        if( map.size()==0)
+        {
+            return null;
+        }
+        return new ActionsPair((double) map.lastEntry().getKey(), (ActionSignature) map.lastEntry().getValue(), start, end);
     }
 
 }

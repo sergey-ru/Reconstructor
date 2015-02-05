@@ -12,7 +12,12 @@ import stscorrection.ActionsPair;
  *
  * @author sergei
  */
-public class LogSergei implements ILogEvaluator{
+public class LogSergei extends AbsLogEvaluator {
+
+    public LogSergei() {
+        super("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Sergei.CSV", 
+                "/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Sergei.CSV", "Sergei");
+    }
     
     @Override
     public double evaluateLog(ArrayList<ActionsPair> actionList)
@@ -45,6 +50,7 @@ public class LogSergei implements ILogEvaluator{
             "FileManager ExplorerFiles Open Chrome UserData Default",
             "FileManager ExplorerFiles Receive History",
             "SystemFunctions HostsFile UpdateHost",
+            "FileManager SearchForFiles Recursive",
             "FileManager ExplorerFiles Open C",
             "FileManager ExplorerFiles Open Users",
             "FileManager ExplorerFiles Open admin",

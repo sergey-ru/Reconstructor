@@ -12,7 +12,12 @@ import stscorrection.ActionsPair;
  *
  * @author sergei
  */
-public class LogSlava implements ILogEvaluator{
+public class LogSlava extends AbsLogEvaluator {
+
+    public LogSlava() {
+        super("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_Slava.CSV", 
+                "/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_Slava.CSV", "Slava");
+    }
     
     @Override
     public double evaluateLog(ArrayList<ActionsPair> actionList)
@@ -46,6 +51,9 @@ public class LogSlava implements ILogEvaluator{
             "FileManager ExplorerFiles Receive History",
             "SystemFunctions HostsFile UpdateHost",
             "SystemFunctions HostsFile UpdateHost",
+            "FileManager SearchForFiles Recursive",
+            "FileManager SearchForFiles Recursive",
+            "FileManager SearchForFiles Recursive",
             "FileManager ExplorerFiles Open Chrome UserData Default",
             "FileManager ExplorerFiles Open Chrome UserData",
             "FileManager ExplorerFiles Open Chrome",

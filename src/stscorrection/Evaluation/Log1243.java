@@ -12,18 +12,16 @@ import stscorrection.ActionsPair;
  *
  * @author sergei
  */
-public class LogGay extends AbsLogEvaluator {
+public class Log1243 extends AbsLogEvaluator {
 
-    public LogGay() {
-        super("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_gay.CSV.CSV", 
-                "/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_gay.CSV", "Guy");
+    public Log1243() {
+        super("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_1243.CSV", 
+                "/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_1243.CSV", "1243");
     }
-    
+
     @Override
-    public double evaluateLog(ArrayList<ActionsPair> actionList)
-    {
-        String [] ref = new String[]
-        {
+    public double evaluateLog(ArrayList<ActionsPair> actionList) {
+        String[] ref = new String[]{
             "Passwords StoredPasswords Refresh",
             "FileManager ExplorerFiles Open C",
             "FileManager ExplorerFiles Open Users",
@@ -42,11 +40,16 @@ public class LogGay extends AbsLogEvaluator {
             "FileManager ExplorerFiles Open inetpub",
             "FileManager ExplorerFiles Open wwwroot",
             "FileManager ExplorerFiles Send Yahoo",
-            "SystemFunctions HostsFile GetHostsFile",
             "SystemFunctions HostsFile UpdateHost",
+            "FileManager SearchForFiles Recursive",
+            "FileManager ExplorerFiles Receive Grades",
             "FileManager ExplorerFiles Open inetpub",
             "FileManager ExplorerFiles Open C",
             "FileManager ExplorerFiles Open Users",
+            "FileManager ExplorerFiles Open admin",
+            "FileManager ExplorerFiles Open Documents",
+            "FileManager ExplorerFiles Receive Grades",
+            "FileManager ExplorerFiles Send Grades",
             "FileManager ExplorerFiles Open admin",
             "FileManager ExplorerFiles Open AppData",
             "FileManager ExplorerFiles Open Local",
@@ -55,28 +58,16 @@ public class LogGay extends AbsLogEvaluator {
             "FileManager ExplorerFiles Open Chrome UserData",
             "FileManager ExplorerFiles Open Chrome UserData Default",
             "FileManager ExplorerFiles Receive History",
-            "SystemFunctions HostsFile UpdateHost",
-            "FileManager SearchForFiles Recursive",
-            "FileManager ExplorerFiles Receive Grades",
-            "FileManager ExplorerFiles Open Chrome UserData",
-            "FileManager ExplorerFiles Open Chrome",
-            "FileManager ExplorerFiles Open Google",
-            "FileManager ExplorerFiles Open Local",
-            "FileManager ExplorerFiles Open AppData",
-            "FileManager ExplorerFiles Open admin",
-            "FileManager ExplorerFiles Open Documents",
-            "FileManager ExplorerFiles Receive Grades",
-            "FileManager ExplorerFiles Send Grades",
-            "FileManager ExplorerFiles Receive Grades"
+            "SystemFunctions HostsFile UpdateHost"
         };
-        
-        String [] ansArray = new String[actionList.size()];
+
+        String[] ansArray = new String[actionList.size()];
         int i = 0;
         for (ActionsPair action : actionList) {
-           ansArray[i] = action.getAction().getName();
-           i++;
+            ansArray[i] = action.getAction().getName();
+            i++;
         }
-        
-        return  StrArrayComperator.calcScore(ref, ansArray);
+
+        return StrArrayComperator.calcScore(ref, ansArray);
     }
 }

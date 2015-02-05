@@ -12,7 +12,12 @@ import stscorrection.ActionsPair;
  *
  * @author sergei
  */
-public class LogAmit implements ILogEvaluator{
+public class LogAmit extends AbsLogEvaluator{
+
+    public LogAmit() {
+        super("C:\\Users\\sergeyru\\Downloads\\1\\Logfile_amit.CSV", 
+                "/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_amit.CSV", "Amit");
+    }
     
     @Override
     public double evaluateLog(ArrayList<ActionsPair> actionList)
@@ -65,6 +70,10 @@ public class LogAmit implements ILogEvaluator{
             "FileManager ExplorerFiles Open admin",
             "FileManager ExplorerFiles Open Users",
             "FileManager ExplorerFiles Open C",
+            "FileManager SearchForFiles Recursive",
+            "FileManager SearchForFiles Recursive",
+            "FileManager SearchForFiles Recursive",
+            "FileManager SearchForFiles Recursive",
             "FileManager ExplorerFiles Open Users",
             "FileManager ExplorerFiles Open admin",
             "FileManager ExplorerFiles Open Documents",

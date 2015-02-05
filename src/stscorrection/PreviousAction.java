@@ -35,5 +35,4 @@ public class PreviousAction {
     public void setCoefficient(double _coefficient) {
         this._coefficient = _coefficient;
     }
-    
 }
