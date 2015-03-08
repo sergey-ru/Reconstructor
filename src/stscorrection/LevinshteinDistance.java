@@ -26,10 +26,11 @@ public class LevinshteinDistance {
             int cost;                   // cost
 
             /// Test string length
-            if (Math.max(sNew.length, sOld.length) > Math.pow(2, 31)){
-                System.out.println("\nMaximum string length in Levenshtein.iLD is " + Math.pow(2, 31) + ".\nYours is " + Math.max(sNew.length, sOld.length) + ".");
-                return 0;
-            }
+//            if (Math.max(sNew.length, sOld.length) > Math.pow(2, 31)){
+//                System.out.println("\nMaximum string length in Levenshtein.iLD is " + Math.pow(2, 31) + ".\nYours is " + Math.max(sNew.length, sOld.length) + ".");
+//                System.out.print("0000000");
+//                return 0;
+//            }
                 //throw (new Exception("\nMaximum string length in Levenshtein.iLD is " + Math.pow(2, 31) + ".\nYours is " + Math.max(sNew.length, sOld.length) + "."));
 
             // Step 1
@@ -113,18 +114,6 @@ public class LevinshteinDistance {
                 v1 = vTmp;
 
             }
-                
-
-            // Step 7
-
-            /// Value between 0 - 100
-            /// 0==perfect match 100==totaly different
-            /// 
-            /// The vectors where swaped one last time at the end of the last loop,
-            /// that is why the result is now in v0 rather than in v1
-            //System.out.println("iDist=" + v0[RowLen]);
-            //int max = Math.max(RowLen, ColLen);
-            //return ((100 * v0[RowLen]) / max);
             return (double) v0[RowLen];
         }
 
