@@ -32,23 +32,23 @@ public class StSCorrection {
 
     public static void main(String[] args) {
 
-        if (args.length == 0 || Integer.parseInt(args[0]) != 0) {
-            SubMain(args);
+//        if (args.length == 0 || Integer.parseInt(args[0]) != 0) {
+//            SubMain(args);
+//        }
+
+        OperationType.init();
+        
+        if (SystemUtils.IS_OS_LINUX) {
+            EventComparator_NF.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
+        } else {
+            EventComparator_NF.init("C:\\Users\\sergeyru\\Downloads\\1\\taxonomy", splitByStart, splitByEnd);
         }
 
-//        OperationType.init();
-//        
-//        if (SystemUtils.IS_OS_LINUX) {
-//            EventComparator_NF.init("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Expiriment/taxonomy", splitByStart, splitByEnd);
-//        } else {
-//            EventComparator_NF.init("C:\\Users\\sergeyru\\Downloads\\1\\taxonomy", splitByStart, splitByEnd);
-//        }
-//
-//        SystemEvent[][] splitedArray = 
-//                LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_2431.CSV", 1)
-//                        , splitByStart, splitByEnd);
-//        
-//        Test_Method(splitedArray, scale[scale.length - 1], Integer.MAX_VALUE, false, null, null);
+        SystemEvent[][] splitedArray = 
+                LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_2314.CSV", 1)
+                        , splitByStart, splitByEnd);
+        
+        Test_Method(splitedArray, scale[scale.length - 1], Integer.MAX_VALUE, false, null, null);
     }
 
     private static void Run_Log_NF(AbsLogEvaluator evaluator) {
@@ -336,6 +336,8 @@ public class StSCorrection {
             System.out.println("\t*    18: 3214                                                       *");
             System.out.println("\t*    19: 3142                                                       *");
             System.out.println("\t*    20: 2431                                                       *");
+            System.out.println("\t*    21: 2413                                                       *");
+            System.out.println("\t*    22: 2341                                                       *");
             System.out.println("\t*********************************************************************");
             System.out.println("");
         } else if (args.length == 2) {
@@ -399,6 +401,12 @@ public class StSCorrection {
                     return;
                 case 20:
                     SubSubMain(new Log2431(), Integer.parseInt(args[1]));
+                    return;
+                case 21:
+                    SubSubMain(new Log2413(), Integer.parseInt(args[1]));
+                    return;
+                case 22:
+                    SubSubMain(new Log2341(), Integer.parseInt(args[1]));
                     return;
                 default:
                     System.out.println("Error. No file selected .... ");
