@@ -45,7 +45,7 @@ public class StSCorrection {
 //        }
 //
 //        SystemEvent[][] splitedArray = 
-//                LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_2143.CSV", 1)
+//                LogReader.splitEventArray(LogReader.readLogFile("/home/sergei/Dropbox/~Modeling and Simulation of Advanced Persistent Threat/DarkCommet/Logs/Logfile_1324.CSV", 1)
 //                        , splitByStart, splitByEnd);
 //        
 //        Test_Method(splitedArray, scale[scale.length - 1], Integer.MAX_VALUE, false, null, null);
@@ -342,6 +342,9 @@ public class StSCorrection {
             System.out.println("\t*    24: 2134                                                       *");
             System.out.println("\t*    25: 2143                                                       *");
             System.out.println("\t*    26: 2314                                                       *");
+            System.out.println("\t*    27: 1423                                                       *");
+            System.out.println("\t*    28: 1342                                                       *");
+            System.out.println("\t*    29: 1324                                                       *");
             System.out.println("\t*********************************************************************");
             System.out.println("");
         } else if (args.length == 2) {
@@ -423,6 +426,15 @@ public class StSCorrection {
                     return;
                 case 26:
                     SubSubMain(new Log2314(), Integer.parseInt(args[1]));
+                    return;
+                case 27:
+                    SubSubMain(new Log1423(), Integer.parseInt(args[1]));
+                    return;
+                case 28:
+                    SubSubMain(new Log1342(), Integer.parseInt(args[1]));
+                    return;
+                case 29:
+                    SubSubMain(new Log1324(), Integer.parseInt(args[1]));
                     return;
                 default:
                     System.out.println("Error. No file selected .... ");
