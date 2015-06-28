@@ -32,6 +32,9 @@ public class StSCorrection {
 
     public static void main(String[] args) {
 
+        
+        //args = new String [] {"9","3"};
+        
         if (args.length == 0 || Integer.parseInt(args[0]) != 0) {
             SubMain(args);
         }
@@ -310,12 +313,9 @@ public class StSCorrection {
 
     private static void SubMain(String[] args) {
         if (args.length == 0) {
+            System.out.println("");
             System.out.println("\t*********************************************************************");
-            System.out.println("\t* Second param:                                                     *");
-            System.out.println("\t*     1: Log_NF                                                     *");
-            System.out.println("\t*     2: Log_NF_maxLength                                           *");
-            System.out.println("\t*     3: Log_NF_LogRemove                                           *");
-            System.out.println("\t*********************************************************************");
+            System.out.println("\t*     0: Temp test fuction                                          *");
             System.out.println("\t*     1: Sergei                                                     *");
             System.out.println("\t*     2: Slava                                                      *");
             System.out.println("\t*     3: Alex                                                       *");
@@ -346,9 +346,17 @@ public class StSCorrection {
             System.out.println("\t*    28: 1342                                                       *");
             System.out.println("\t*    29: 1324                                                       *");
             System.out.println("\t*********************************************************************");
+            System.out.println("\t* Second param:                                                     *");
+            System.out.println("\t*     1: Log_NF                                                     *");
+            System.out.println("\t*     2: Log_NF_maxLength                                           *");
+            System.out.println("\t*     3: Log_NF_LogRemove                                           *");
+            System.out.println("\t*********************************************************************");
             System.out.println("");
         } else if (args.length == 2) {
             switch (Integer.parseInt(args[0])) {
+                case 0:
+                    SubMainTemp();
+                    return;
                 case 1:
                     SubSubMain(new LogSergei(), Integer.parseInt(args[1]));
                     return;
@@ -461,6 +469,11 @@ public class StSCorrection {
         }
     }
 
+    private static void SubMainTemp()
+    {
+        System.out.println("Empty !!!!");
+    }
+    
     public static double round(double value, int places) {
         if (places < 0) {
             throw new IllegalArgumentException();
