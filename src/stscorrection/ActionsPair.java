@@ -14,8 +14,8 @@ public class ActionsPair {
         
         private final double _key;
         private final ActionSignature _action;
-        
         private int _start;
+        private int _end;
 
         public int getStart() {
             return _start;
@@ -24,7 +24,14 @@ public class ActionsPair {
         public int getEnd() {
             return _end;
         }
-        private int _end;
+
+        public double getKey() {
+            return _key;
+        }
+
+        public ActionSignature getAction() {
+            return _action;
+        }        
         
         public ActionsPair(double _key, ActionSignature _action,int start,int end) {
             this._key = _key;
@@ -33,12 +40,5 @@ public class ActionsPair {
             this._end=end;
         }
 
-        public double getKey() {
-            return _key;
-        }
-
-        public ActionSignature getAction() {
-            return _action;
-        }
         
     }

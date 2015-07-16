@@ -254,47 +254,41 @@ public class StSCorrection {
 
     }
 
-    private static double Test_Method(SystemEvent[][] splitedArray, double coefficient, int maxLength, boolean accumulation, StringBuffer sb, AbsLogEvaluator evaluator) {
+    private static double Test_Method(SystemEvent[][] splitedArray, double alpha, int maxLength, boolean accumulation, StringBuffer sb, AbsLogEvaluator evaluator) {
 
-        HashSet<Integer> foundActions = new HashSet();
-        ArrayList<Integer> seenActionsList = new ArrayList<>(splitedArray.length);
-        ArrayList<ActionsPair> ansList = new ArrayList<>(splitedArray.length);
+        HashSet<Integer> foundActionsHash = new HashSet();
+        ArrayList<Integer> foundActionsList = new ArrayList<>(splitedArray.length);
+        ArrayList<ActionsPair> foundActionsAns = new ArrayList<>(splitedArray.length);
 
-        //try{
-        //ExecutorService pool = Executors.newFixedThreadPool(1);//Runtime.getRuntime().availableProcessors());
+        
         for (int i = 0; i < splitedArray.length; i++) {
 
-            ActionsPair ap_old = null;
+            ActionsPair old_pair = null;
             SystemEvent[] toCompare;
 
-            ActionsPair future = null;
+            ActionsPair new_pair = null;
             toCompare = splitedArray[i];
 
-            future = EventComparator_NF.CompareEvents(toCompare, foundActions, seenActionsList, i, i, coefficient, maxLength, accumulation);
+            new_pair = EventComparator_NF.CompareEvents(toCompare, foundActionsHash, foundActionsList, i, i, alpha, maxLength, accumulation);
 
-            //Future<ActionsPair> future = pool.submit(new EventComparator_NF(toCompare, foundActions, seenActionsList, i, i, coefficient, maxLength, accumulation));
-            if ((future != null && future.getKey() > 0.5) && (ap_old == null || ap_old.getKey() < future.getKey())) {
-                ap_old = future;
-            //}
+            
+            if ((new_pair != null && new_pair.getKey() > 0.5) && (old_pair == null || old_pair.getKey() < new_pair.getKey())) {
+                old_pair = new_pair;
 
-                //if (ap_old != null) {
-                foundActions.add(ap_old.getAction().getActionId());
-                seenActionsList.add(ap_old.getAction().getActionId());
-                ansList.add(ap_old);
+                foundActionsHash.add(old_pair.getAction().getActionId());
+                foundActionsList.add(old_pair.getAction().getActionId());
+                foundActionsAns.add(old_pair);
             }
         }
-
-        //pool.shutdown();
-//        }
-//        catch(Exception ex)
-//        {
-//            System.out.println("Error !!!!");
-//        }
+        
+        
+        
+        //printing 
         double accuracy = 0;
         if (evaluator != null) {
-            accuracy = round(evaluator.evaluateLog(ansList), 4);
+            accuracy = round(evaluator.evaluateLog(foundActionsAns), 4);
             if (sb != null) {
-                sb.append(round(coefficient, 4))
+                sb.append(round(alpha, 4))
                         .append(",")
                         .append(accumulation)
                         .append(",")
@@ -304,7 +298,7 @@ public class StSCorrection {
                         .append(System.lineSeparator());
             }
         } else {
-            for (ActionsPair ansList1 : ansList) {
+            for (ActionsPair ansList1 : foundActionsAns) {
                 System.out.println(ansList1.getAction().getName());
             }
         }

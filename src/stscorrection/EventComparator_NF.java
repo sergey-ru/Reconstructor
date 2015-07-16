@@ -338,7 +338,7 @@ public class EventComparator_NF implements Callable<ActionsPair> {
         return new ActionsPair((double) map.lastEntry().getKey(), (ActionSignature) map.lastEntry().getValue(), _start, _end);
     }
 
-    public static ActionsPair CompareEvents(SystemEvent[] events, HashSet<Integer> seenActions, ArrayList<Integer> seenActionsList, int start, int end, double coefficient, int maxLength, boolean multiply) {
+    public static ActionsPair CompareEvents(SystemEvent[] events, HashSet<Integer> seenActions, ArrayList<Integer> seenActionsList, int start, int end, double alpha, int maxLength, boolean multiply) {
         TreeMap map = new TreeMap();
 
         for (ActionSignature systemAction : _actions) {
@@ -370,77 +370,13 @@ public class EventComparator_NF implements Callable<ActionsPair> {
 
                 }
 
-                if (coefficient < 0) {
+                if (alpha < 0) {
 
                     LD = LD * _prevActionCoefficient + TxD * (1 - _prevActionCoefficient);
                 } else {
 
-                    LD = LD * coefficient + TxD * (1 - coefficient);
+                    LD = LD * alpha + TxD * (1 - alpha);
                 }
-
-//                for (PreviousAction _prevAction : systemAction.getPrevious_actions()) {
-//
-//                    if (maxLength < 0)//No max Length 
-//                    {
-//                        //difrential 
-//                        if (seenActions.contains(_prevAction.getPrevious_action_id())) {
-//
-//                            TxD = 1;
-//
-//                            for (int i = 0; i < seenActionsList.size(); i++) {
-//                                if (seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
-//                                    TxD = (i + 1) / seenActionsList.size();
-//                                    break;
-//                                }
-//                            }
-//
-//                            if (coefficient < 0) {
-//
-//                                //TxD = 1 + TxD * (_prevAction.getCoefficient() -1 );
-//                                //LD = TxD * LD * _prevAction.getCoefficient();
-//                                LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
-//                            } else {
-//
-//                                //TxD = 1 + TxD * (this._coefficient -1 );
-//                                //LD = TxD * LD * this._coefficient;
-//                                LD = LD * coefficient + TxD * (1 - coefficient);
-//                            }
-//                            if (!multiply) {
-//                                break;
-//                            }
-//                        }
-//
-//                    } else // Max Length 
-//                    {
-//                        //difrential 
-//                        if (seenActions.contains(_prevAction.getPrevious_action_id())) {
-//
-//                            TxD = Double.NEGATIVE_INFINITY;
-//
-//                            for (int i = 0; i < seenActionsList.size(); i++) {
-//                                if (seenActionsList.get(i) == _prevAction.getPrevious_action_id()) {
-//                                    TxD = (i + 1);
-//                                    break;
-//                                }
-//                            }
-//                            if (seenActionsList.size() - TxD <= maxLength) {
-//
-//                                TxD = TxD / seenActionsList.size();
-//
-//                                if (coefficient < 0) {
-//
-//                                    LD = LD * _prevAction.getCoefficient() + TxD * (1 - _prevAction.getCoefficient());
-//                                } else {
-//
-//                                    LD = LD * coefficient + TxD * (1 - coefficient);
-//                                }
-//                                if (!multiply) {
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                    }
-//            }
                 map.put(LD, systemAction);
             }
         }
